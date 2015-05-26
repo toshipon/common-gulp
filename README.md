@@ -2,11 +2,11 @@
 gulpの共通タスク集  
 
 ## Stylus
-指定したsrcDirの中から、_で始まらないstylファイルを対象にコンパイルを実施する。  
+指定したsrcDirの中から_で始まらないstylファイルを対象にコンパイルを実施する。  
 autoprefixerの設定も同時に可能。  
 
 ## Webpack
-指定したsrcDirの中から、_で始まらないjsファイルを対象にコンパイルを実施する。  
+指定したsrcDirの中から_で始まらないjsファイルを対象にコンパイルを実施する。  
 uglifyでの圧縮も可能。（compressオプションがtrueのときのみ）
 
 ## Aeromock
