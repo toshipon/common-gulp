@@ -61,5 +61,6 @@ gulp.task('default', [
 	'webserver',
 	'aeromock-start',
 	'rsync',
-	'html'
+	'html',
+	'freemarker-server'
 ]);
