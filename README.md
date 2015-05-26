@@ -3,7 +3,7 @@ gulpの共通タスク集
 
 # Usage
 ```bash
-$ npm install --save-dev git@github.com:feb0223/common-gulp.git
+$ npm install --save-dev git://github.com/feb0223/common-gulp.git
 ```
 OR  
 ```json
