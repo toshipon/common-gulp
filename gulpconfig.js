@@ -66,6 +66,9 @@ module.exports = {
 	},
 	freemarkerServer: {
 		rootDir: './public',
-		port: 3000
+		options: {
+			directoryListing: false,
+			port: 3000
+		}
 	}
 };
