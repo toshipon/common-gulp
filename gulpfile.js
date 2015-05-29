@@ -44,7 +44,7 @@ if (config.webpack) {
 // sprite
 if (config.sprite) {
 	Object.keys(config.sprite).forEach(function(type) {
-		gulp.task('sprite:' + type, tasks.Sprite(config.sprite[key]));
+		gulp.task('sprite:' + type, tasks.Sprite(config.sprite[type]));
 	});
 }
 
