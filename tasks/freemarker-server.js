@@ -8,6 +8,21 @@ var express = require('express')
 var Freemarker = require('freemarker.js');
 var async = require('async');
 
+	
+function getModified(viewPath, modulesPath) {
+	function modified(info) {
+		return (info) ? new Date(info.mtime).getTime() : 0;
+	}
+	var viewInfo;
+	try {
+		viewInfo = fs.statSync(viewPath);
+	} catch (e) {
+		viewInfo = null;
+	}
+	var modulesInfo = fs.existsSync(modulesPath) ? fs.statSync(modulesPath) : 0;
+	return modified(viewInfo) + modified(modulesInfo);
+}
+
 module.exports = function(serverConfig, freemarkerConfig, option) {
 	option = option || {};
 	
@@ -25,39 +40,23 @@ module.exports = function(serverConfig, freemarkerConfig, option) {
 	var viewCache;
 	var viewConfig;
 	
-	function getModified(layoutPath, viewPath, modulesPath) {
-		function modified(info) {
-			return (info) ? new Date(info.mtime).getTime() : 0;
-		}
-		var layoutInfo = fs.statSync(layoutPath);
-		var viewInfo;
-		try {
-			viewInfo = fs.statSync(viewPath);
-		} catch (e) {
-			viewInfo = null;
-		}
-		var modulesInfo = fs.statSync(modulesPath);
-		return modified(layoutInfo) + modified(viewInfo) + modified(modulesInfo);
-	}
-	
 	function routing(routePath) {
 		var uri = (routePath === 'index') ? '/' : '/' + routePath;
 		app.get(uri, function(req, res) {
 			var pages = viewConfig.pages;
 			var page = pages[routePath];
-			var layout = page.layout || viewConfig.layout;
+			var view = page.view;
 			
-			var commonData = _.cloneDeep(viewConfig.common.data);
-			var pageData = _.cloneDeep(page.data);
+			var commonData = (viewConfig.common && viewConfig.common.data) ? _.cloneDeep(viewConfig.common.data) : {};
+			var pageData = (page.data) ? _.cloneDeep(page.data) : {};
 			var data = _.merge(commonData, pageData);
 			
-			var layoutPath = path.join(viewRoot, layout);
-			var viewPath = path.join(viewRoot, 'pages', data.view) + '.ftl';
+			var viewPath = path.join(viewRoot, view);
 			var modulesPath = path.join(viewRoot, 'modules');
 			
 			async.waterfall([
 				function(next) {
-					var modified = getModified(layoutPath, viewPath, modulesPath);
+					var modified = getModified(viewPath, modulesPath);
 					
 					var cache = viewCache[routePath];
 					if (cache) {
@@ -67,7 +66,7 @@ module.exports = function(serverConfig, freemarkerConfig, option) {
 						}
 					}
 					
-					Fm.render(layout, data, function(err, out, msg) {
+					Fm.render(view, data, function(err, out, msg) {
 						if (err) {
 							var errAry = err.split('\n');
 							errAry.shift();
@@ -98,9 +97,8 @@ module.exports = function(serverConfig, freemarkerConfig, option) {
 				viewConfig = JSON.parse(file.contents);
 				
 				viewConfig.pages.index = {
-					layout: 'index.ftl',
+					view: 'index.ftl',
 					data: {
-						view: 'index',
 						'linkedPath': '/',
 						pages: Object.keys(viewConfig.pages)
 					}
