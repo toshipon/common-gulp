@@ -1,6 +1,7 @@
 /**
  * common-gulp
  */
+exports.minimist = require('minimist');
 exports.tasks = {
 	Stylus: require('./tasks/stylus'),
 	Webpack: require('./tasks/webpack'),

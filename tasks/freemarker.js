@@ -26,8 +26,7 @@ module.exports = {
 				.pipe(through.obj(function(file, enc, callback) {
 					var self = this;
 					var config = JSON.parse(file.contents);
-					var layout = config.layserver.jsout;
-					var commonData = config.common.data;
+					var commonData = (config.common && config.common.data) ? config.common.data : {};
 					var pages = config.pages;
 					
 					var basename = path.basename(file.path);
@@ -36,7 +35,7 @@ module.exports = {
 					async.each(Object.keys(pages), function(name, next) {
 						var page = pages[name];
 						var data = _.merge(_.cloneDeep(commonData), page.data);
-						Fm.render(page.layout || layout, data, function(err, out, msg) {
+						Fm.render(page.view, data, function(err, out, msg) {
 							var f = file.clone();
 							f.path = file.path.replace(basename, name + '.json')
 							f.contents = new Buffer(out || msg);
