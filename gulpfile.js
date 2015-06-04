@@ -11,7 +11,6 @@ var tasks = commonGulp.tasks;
 var args = minimist(process.argv.slice(2));
 var isDebug = args && args.d;
 
-var current = process.cwd();
 var config = require('./gulpconfig');
 
 var defaults = [];
@@ -19,7 +18,7 @@ var defaults = [];
 // stylus
 if (config.stylus) {
 	Object.keys(config.stylus).forEach(function(type) {
-		var stylus = tasks.Stylus.create(current, config.stylus[type]);
+		var stylus = tasks.Stylus.create(config.stylus[type]);
 		gulp.task('stylus-compile:' + type, stylus.compile({isDebug: isDebug}));
 		gulp.task('stylus-analysisDependency:' + type, stylus.analysisDependency);
 		gulp.task('stylus-watch:' + type, ['stylus-analysisDependency:' + type], stylus.watch({isDebug: isDebug}));
