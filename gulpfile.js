@@ -85,4 +85,15 @@ if (config.freemarkerServer) {
 	defaults.push('freemarker-server');
 }
 
+// php server
+if (config.phpServer) {
+	gulp.task('php-server', tasks.PhpServer(config.phpServer));
+	defaults.push('php-server');
+}
+
+// php server
+if (config.phpRender) {
+	gulp.task('php-render', tasks.PhpRender(config.phpRender));
+}
+
 gulp.task('default', defaults);

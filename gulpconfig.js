@@ -70,5 +70,16 @@ module.exports = {
 			directoryListing: false,
 			port: 3000
 		}
+	},
+	phpServer: {
+		hostname: 'localhost',
+		port: 3000,
+		base: './public/',
+		router: 'index.php'
+	},
+	phpRender: {
+		configFile: './src/freemarker/config.yml',
+		srcDir: './src/freemarker/',
+		destDir: './public/'
 	}
 };
