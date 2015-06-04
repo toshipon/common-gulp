@@ -7,8 +7,9 @@ var express = require('express');
 
 module.exports = function(serverConfig, renderConfig, option) {
 	option = option || {};
-	var render = require('../libs/node-php')();
 	var current = process.cwd();
+	var renderOption = (option.bin) ? {bin: nodePath.join(current, option.bin)} : {};
+	var render = require('../libs/node-php')(renderOption);
 	
 	var app = express();
 	
@@ -27,7 +28,7 @@ module.exports = function(serverConfig, renderConfig, option) {
 		});
 	}
 	
-	var port = serverConfig.port || 3000;
+	var port = serverConfig.port || process.env.PORT || 3000;
 	var isListened = false;
 	
 	return function() {
