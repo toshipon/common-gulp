@@ -15,11 +15,10 @@ var Stylus = (function() {
 	/**
 	 * @constructor
 	 */
-	function Stylus(current, config) {
-		this.current = current;
+	function Stylus(config) {
 		this.config = config;
-		this.srcDir = path.join(current, config.srcDir);
-		this.destDir = path.join(current, config.destDir);
+		this.srcDir = config.srcDir;
+		this.destDir = config.destDir;
 		this.dep = new StylusDependency();
 		this.watchFiles = [];
 	}
@@ -41,7 +40,8 @@ var Stylus = (function() {
 	/**
 	 * @private
 	 * Stylusのコンパイル
-	 * @param {String} current currentPath
+	 * @param {String} srcDir
+	 * @param {String} destDir
 	 * @param {String or Array} target
 	 * @param {Object} config
 	 * @param {Object} option
@@ -153,6 +153,6 @@ var Stylus = (function() {
 
 module.exports = {
 	create: function(current, config) {
-		return util.createTasks(new Stylus(current, config));
+		return util.createTasks(new Stylus(config));
 	}
 };
