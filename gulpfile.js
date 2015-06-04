@@ -90,7 +90,7 @@ if (config.phpServer) {
 	defaults.push('php-server');
 }
 
-// php server
+// php render
 if (config.phpRender) {
 	gulp.task('php-render', tasks.PhpRender(config.phpRender));
 }
