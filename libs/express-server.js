@@ -8,7 +8,6 @@ var express = require('express')
 var Freemarker = require('freemarker.js');
 var async = require('async');
 
-	
 function getModified(viewPath, modulesPath) {
 	function modified(info) {
 		return (info) ? new Date(info.mtime).getTime() : 0;
@@ -117,7 +116,7 @@ module.exports = function(serverConfig, freemarkerConfig, option) {
 				
 				if (!isListened) {
 					app.listen(port);
-					plugins.util.log('Webserver started at http://localhost:' + port);
+					plugins.util.log('Webserver started at http://0.0.0.0:' + port);
 					isListened = true;
 				}
 				
