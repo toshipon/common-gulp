@@ -71,7 +71,7 @@ var Stylus = (function() {
 			.pipe(plugins.filter([ '**', '!**/_*.styl' ]))
 			.pipe(plugins.plumber())
 			.pipe(plugins.stylus(config.options))
-			.pipe(plugins.if(isAutoprefix, plugins.autoprefixer(config.autoprefixer.options)))
+			.pipe(plugins.if(isAutoprefix, plugins.autoprefixer(isAutoprefix ? config.autoprefixer.options : {})))
 			.pipe(gulp.dest(config.destDir))
 			.pipe(compileLog({
 				logTemplate: 'CSS Compiled files:',
