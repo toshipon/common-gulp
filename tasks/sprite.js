@@ -6,7 +6,7 @@ module.exports = function(config, option) {
 	return function() {
 		var spriteData = gulp
 			.src(config.srcDir + '*.*')
-			.pipe(spritesmith(config.option));
+			.pipe(spritesmith(config.options));
 		
 		spriteData.img.pipe(gulp.dest(config.imgDestDir));
 		spriteData.css.pipe(gulp.dest(config.cssDestDir));
