@@ -154,7 +154,7 @@ var Stylus = (function() {
 })();
 
 module.exports = {
-	create: function(current, config) {
+	create: function(config) {
 		return util.createTasks(new Stylus(config));
 	}
 };

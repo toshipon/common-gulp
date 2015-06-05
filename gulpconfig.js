@@ -1,36 +1,40 @@
 module.exports = {
 	stylus: {
-		srcDir: './template/stylus/',
-		destDir: './dest/css/',
-		useNib: true,
-		options: {
-			define: {
-				'sprite-version': '201409020000'
-			},
-			compress: true
-		},
-		autoprefix: true,
-		autoprefixer: {
-			// autoprefixer option
+		sp: {
+			srcDir: './template/stylus/',
+			destDir: './dest/css/',
+			useNib: true,
 			options: {
-				browsers: [
-					'ios >= 6',
-					'android >= 2.3'
-				]
+				define: {
+					'sprite-version': '201409020000'
+				},
+				compress: true
+			},
+			autoprefix: true,
+			autoprefixer: {
+				// autoprefixer option
+				options: {
+					browsers: [
+						'ios >= 6',
+						'android >= 2.3'
+					]
+				}
 			}
 		}
 	},
 	webpack: {
-		srcDir: './template/js/',
-		destDir: './dest/js/',
-		compress: true,
-		options: {
-			
-		},
-		// uglify output option
-		uglify: {
-			output: {
-				ascii_only: true
+		sp: {
+			srcDir: './template/js/',
+			destDir: './dest/js/',
+			compress: true,
+			options: {
+				
+			},
+			// uglify output option
+			uglify: {
+				output: {
+					ascii_only: true
+				}
 			}
 		}
 	},
