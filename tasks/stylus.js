@@ -57,19 +57,21 @@ var Stylus = (function() {
 			config.options.compress = true;
 		}
 		
-		var isCompress = (option.isDebug !== undefined) ? !option.isDebug : config.options.compress;
+		var isCompress = ('isDebug' in option) ? !option.isDebug : config.options.compress;
 		config.options.compress = isCompress;
 		
 		if (config.useNib) {
 			config.options.use = [nib()];
 		}
 		
+		var isAutoprefix = ('autoprefix' in config) ? config.autoprefix : true;
+		
 		return gulp
 			.src(target, {base: srcDir})
 			.pipe(plugins.filter([ '**', '!**/_*.styl' ]))
 			.pipe(plugins.plumber())
 			.pipe(plugins.stylus(config.options))
-			.pipe(plugins.autoprefixer(config.autoprefixer.option))
+			.pipe(plugins.if(isAutoprefix, plugins.autoprefixer(config.autoprefixer.options)))
 			.pipe(gulp.dest(config.destDir))
 			.pipe(compileLog({
 				logTemplate: 'CSS Compiled files:',

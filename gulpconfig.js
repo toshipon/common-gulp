@@ -9,8 +9,10 @@ module.exports = {
 			},
 			compress: true
 		},
+		autoprefix: true,
 		autoprefixer: {
-			option: {
+			// autoprefixer option
+			options: {
 				browsers: [
 					'ios >= 6',
 					'android >= 2.3'
@@ -36,7 +38,7 @@ module.exports = {
 		srcDir: './template/img/sprite/',
 		imgDestDir: './dest/img/',
 		cssDestDir: './template/stylus/',
-		option: {
+		options: {
 			cssFormat: 'stylus',
 			algorithm : 'left-right',
 			padding: 2,
