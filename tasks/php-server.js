@@ -14,7 +14,6 @@ module.exports = function(serverConfig, renderConfig, option) {
 	var app = express();
 	
 	function routing(routePath) {
-		console.log(routePath);
 		app.get(routePath, function(req, res) {
 			var routerPath = nodePath.join(current, renderConfig.router);
 			var configPath = nodePath.join(current, renderConfig.configFile);
