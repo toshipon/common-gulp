@@ -2,7 +2,7 @@ var child = require('child_process');
 var spawn = child.spawn;
 
 module.exports = function(option) {
-	if (!option || !'bin' in option) {
+	if (!option || !('bin' in option)) {
 		option = {
 			bin: 'php'
 		};
