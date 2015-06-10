@@ -29,7 +29,7 @@ module.exports = function(renderConfig) {
 					var viewPath = nodePath.join(current, renderConfig.srcDir);
 					php(routerPath, [name, configPath, viewPath], function(err, html) {
 						if (err) {
-							plugins.util.log('[ERROR] php', err);
+							gutil.log('[ERROR] php', err);
 						}
 						var f = file.clone();
 						f.path = nodePath.join(destPath, name + '.html');
