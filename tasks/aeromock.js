@@ -35,7 +35,12 @@ var Aeromock = (function() {
 			}
 
 			var port = option.port || '3183';
-			self.process = spawn('aeromock', ['-c', path.join(self.config.dir, 'config.yaml'), '-p', port]);
+			var execOptions = [];
+			if (self.config.execOptions) {
+				execOptions = execOptions.concat(self.config.execOptions);
+			}
+			execOptions = execOptions.concat(['-p', port]);
+			self.process = spawn('aeromock', execOptions);
 			self.process.stdout.on('data', function(data) {
 				var str = data.toString();
 				if (isFirst) {
@@ -80,8 +85,8 @@ var Aeromock = (function() {
 	
 	cls.linkIndex = function(done) {
 		var indexPath = path.join(current, this.config.dir, 'index.ftl');
-		console.log('indexPath', indexPath);
-		var cmd = nodeUtil.format('ln -f %s ../view/index.ftl', indexPath);
+		var viewPath = path.join(current, this.config.viewPath, 'index.ftl');
+		var cmd = nodeUtil.format('ln -f %s %s', indexPath, viewPath);
 		exec(cmd, function(err, stdout, stderr) {
 			if (err) {
 				gutil.log('[ERROR] link index error', err);
