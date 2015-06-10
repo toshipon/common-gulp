@@ -56,7 +56,8 @@ module.exports = {
 		port: 3000
 	},
 	aeromock: {
-		dir: './aeromock/'
+		dir: './aeromock/',
+		execOptions: ['-c', './aeromock/config.yaml']
 	},
 	rsync: {
 		username: 'user',
