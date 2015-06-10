@@ -53,11 +53,10 @@ var Stylus = (function() {
 		if (!('options' in config)) {
 			config.options = {};
 		}
-		if (!('compress' in config.options)) {
+		if (config.options.compress === undefined) {
 			config.options.compress = true;
 		}
-		
-		var isCompress = ('isDebug' in option) ? !option.isDebug : config.options.compress;
+		var isCompress = (option.isDebug !== undefined) ? !option.isDebug : config.options.compress;
 		config.options.compress = isCompress;
 		
 		if (config.useNib) {
