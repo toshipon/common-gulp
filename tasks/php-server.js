@@ -14,6 +14,7 @@ module.exports = function(serverConfig, renderConfig, option) {
 	var app = express();
 	
 	function routing(routePath) {
+		console.log(routePath);
 		app.get(routePath, function(req, res) {
 			var routerPath = nodePath.join(current, renderConfig.router);
 			var configPath = nodePath.join(current, renderConfig.configFile);
@@ -45,7 +46,7 @@ module.exports = function(serverConfig, renderConfig, option) {
 					if (!pages.hasOwnProperty(path)) {
 						continue;
 					}
-					routing(nodePath.join('/', path));
+					routing('/' + path.replace(/^\//, ''));
 				}
 				
 				app.use(express.static(nodePath.join(current, serverConfig.rootDir), {redirect: false}));
