@@ -23,17 +23,18 @@ module.exports = function(renderConfig) {
 				
 				// parallelにループする
 				var pages = config.pages;
-				async.each(Object.keys(pages), function(name, next) {
+				async.eachSeries(Object.keys(pages), function(name, next) {
+					var execOptions = renderConfig.execOptions || [];
 					var routerPath = nodePath.join(current, renderConfig.router);
 					var configPath = nodePath.join(current, renderConfig.configFile);
 					var viewPath = nodePath.join(current, renderConfig.srcDir);
-					php(routerPath, [name, configPath, viewPath], function(err, html) {
+					php(routerPath, [name, configPath, viewPath], execOptions, function(err, html) {
 						if (err) {
-							gutil.log('[ERROR] php', err);
+							gutil.log(gutil.colors.red('[ERROR] php', JSON.stringify(err, null, 2)));
 						}
 						var f = file.clone();
 						f.path = nodePath.join(destPath, name + '.html');
-						f.contents = new Buffer(html);
+						f.contents = new Buffer(html, 'utf8');
 						self.push(f);
 						next();
 					});

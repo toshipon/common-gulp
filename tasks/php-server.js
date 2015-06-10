@@ -10,6 +10,7 @@ module.exports = function(serverConfig, renderConfig, option) {
 	var current = process.cwd();
 	var renderOption = (option.bin) ? {bin: nodePath.join(current, option.bin)} : {};
 	var render = require('../libs/node-php')(renderOption);
+	var execOptions = renderConfig.execOptions || [];
 	
 	var app = express();
 	
@@ -18,9 +19,9 @@ module.exports = function(serverConfig, renderConfig, option) {
 			var routerPath = nodePath.join(current, renderConfig.router);
 			var configPath = nodePath.join(current, renderConfig.configFile);
 			var viewPath = nodePath.join(current, renderConfig.srcDir);
-			render(routerPath, [routePath, configPath, viewPath], function(err, html) {
+			render(routerPath, [routePath, configPath, viewPath], execOptions, function(err, html) {
 				if (err) {
-					plugins.util.log('[ERROR] php', err);
+					plugins.util.log(plugins.util.colors.red('[ERROR] php', JSON.stringify(err, null, 2)));
 				}
 				res.writeHead(200, {'Content-Type': 'text/html'});
 				res.end(html, 'utf-8');
