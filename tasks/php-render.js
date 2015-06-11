@@ -21,7 +21,8 @@ module.exports = function(renderConfig) {
 				var self = this;
 				var config = JSON.parse(file.contents);
 				
-				// parallelにループする
+				var basename = nodePath.basename(file.path);
+				
 				var pages = config.pages;
 				async.eachSeries(Object.keys(pages), function(name, next) {
 					var execOptions = renderConfig.execOptions || [];
@@ -33,7 +34,7 @@ module.exports = function(renderConfig) {
 							gutil.log(gutil.colors.red('[ERROR] php', JSON.stringify(err, null, 2)));
 						}
 						var f = file.clone();
-						f.path = nodePath.join(destPath, name + '.html');
+						f.path = file.path.replace(basename, name.replace(/^\//, '') + '.html')
 						f.contents = new Buffer(html, 'utf8');
 						self.push(f);
 						next();
