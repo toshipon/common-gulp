@@ -7,9 +7,10 @@ var async = require('async');
 
 var current = process.cwd();
 
-module.exports = function(renderConfig) {
-	var php = require('../libs/node-php')();
+module.exports = function(renderConfig, option) {
 	var configFile = nodePath.join(current, renderConfig.configFile);
+	var renderOption = (option.bin) ? {bin: nodePath.join(current, option.bin)} : {};
+	var php = require('../libs/node-php')(renderOption);
 	
 	return function() {
 		var compiledFiles = [];
