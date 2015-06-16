@@ -88,6 +88,12 @@ module.exports = {
 	phpRender: {
 		configFile: './src/freemarker/config.yml',
 		srcDir: './src/freemarker/',
-		destDir: './public/'
+		destDir: './public/',
+		compress: true,
+		htmlmin: {
+			options: {
+				collapseWhitespace: true
+			}
+		}
 	}
 };
