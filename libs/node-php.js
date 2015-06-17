@@ -40,7 +40,7 @@ module.exports = function(option) {
 			});
 			
 			process.on('close', function(code, arg2) {
-				if (code === 0) {
+				if (code === 0 && !stderr) {
 					done(null, output);
 					return;
 				}
