@@ -3,7 +3,6 @@ var plugins = require("gulp-load-plugins")();
 var nodePath = require('path');
 var through = require("through2");
 var async = require('async');
-var htmlmin = require('gulp-htmlmin');
 
 var current = process.cwd();
 
@@ -18,7 +17,7 @@ module.exports = function(renderConfig, option) {
 		var destPath = nodePath.join(current, renderConfig.destDir);
 		
 		var isCompress = ('compress' in renderConfig) ? renderConfig.compress : false;
-		console.log('isCompress', isCompress);
+		
 		return gulp
 			.src(configFile)
 			.pipe(plugins.yaml())
@@ -38,6 +37,10 @@ module.exports = function(renderConfig, option) {
 						if (err) {
 							plugins.util.log(plugins.util.colors.red('[ERROR] php', JSON.stringify(err, null, 2)));
 						}
+						if (option.dryRun) {
+							next();
+							return;
+						}
 						var f = file.clone();
 						f.path = file.path.replace(basename, name.replace(/^\//, '') + '.html')
 						f.contents = new Buffer(html, 'utf8');
@@ -56,6 +59,9 @@ module.exports = function(renderConfig, option) {
 			.pipe(plugins.if(isCompress, plugins.htmlmin(isCompress ? renderConfig.htmlmin.options : {})))
 			.pipe(gulp.dest(destPath))
 			.on('end', function() {
+				if (option.dryRun) {
+					return;
+				}
 				plugins.util.log('HTML Compiled files:\n\t' + plugins.util.colors.magenta(compiledFiles.join('\n\t')));
 			});
 	};
