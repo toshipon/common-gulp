@@ -76,7 +76,13 @@ module.exports = {
 		options: {
 			directoryListing: false,
 			port: 3000
-		}
+		},
+		// rootDirからのパス
+		watchDirs: [
+			'modules/',
+			'helpers/',
+			'bower_components/freemarker-libs/'
+		]
 	},
 	phpServer: {
 		rootDir: './public/',
@@ -95,5 +101,16 @@ module.exports = {
 				collapseWhitespace: true
 			}
 		}
-	}
+	},
+	concat: {
+		'sp-vendor': {
+			src: [
+				'./src/bower_components/jquery-modern/dist/jquery.min.js',
+				'./src/bower_components/lodash/lodash.min.js',
+				'./src/bower_components/d3/d3.min.js'
+			],
+			destDir: './public/sp/js/',
+			destName: 'vendor.js'
+		}
+	},
 };

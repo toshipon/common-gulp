@@ -25,9 +25,21 @@ module.exports = {
 				.pipe(yaml())
 				.pipe(through.obj(function(file, enc, callback) {
 					var self = this;
-					var config = JSON.parse(file.contents);
-					var commonData = (config.common && config.common.data) ? config.common.data : {};
-					var pages = config.pages;
+					var templateConfig = JSON.parse(file.contents);
+					var commonData = (templateConfig.common && templateConfig.common.data) ? templateConfig.common.data : {};
+					var pages = templateConfig.pages;
+					
+					if (config.hasIndex) {
+						pages.index = {
+							view: 'index.ftl',
+							data: {
+								'linkedPath': '/',
+								pages: Object.keys(pages).map(function(key) {
+									return key + '.html';
+								})
+							}
+						};
+					}
 					
 					var basename = path.basename(file.path);
 					

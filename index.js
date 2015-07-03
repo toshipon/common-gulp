@@ -12,5 +12,10 @@ exports.tasks = {
 	Freemarker: require('./tasks/freemarker'),
 	FreemarkerServer: require('./tasks/freemarker-server'),
 	PhpServer: require('./tasks/php-server'),
-	PhpRender: require('./tasks/php-render')
+	Concat: require('./tasks/concat')
+};
+exports.libs = {
+	CompileLog: require('./libs/compile-log'),
+	NodePhp: require('./libs/node-php'),
+	StylusDependency: require('./libs/stylus-dependency')
 };

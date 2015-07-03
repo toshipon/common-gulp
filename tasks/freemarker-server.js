@@ -9,7 +9,7 @@ var Freemarker = require('freemarker.js');
 var async = require('async');
 
 	
-function getModified(viewPath, modulesPath) {
+function getModified(viewPath, watchDirs) {
 	function modified(info) {
 		return (info) ? new Date(info.mtime).getTime() : 0;
 	}
@@ -19,8 +19,18 @@ function getModified(viewPath, modulesPath) {
 	} catch (e) {
 		viewInfo = null;
 	}
-	var modulesInfo = fs.existsSync(modulesPath) ? fs.statSync(modulesPath) : 0;
-	return modified(viewInfo) + modified(modulesInfo);
+	
+	var watchDirsModified = 0;
+	if (watchDirs) {
+		watchDirs.forEach(function(dirPath) {
+			if (!fs.existsSync(dirPath)) {
+				return;
+			}
+			watchDirsModified += modified(fs.statSync(dirPath));
+		});
+	}
+	
+	return modified(viewInfo) + watchDirsModified;
 }
 
 module.exports = function(serverConfig, freemarkerConfig, option) {
@@ -51,11 +61,17 @@ module.exports = function(serverConfig, freemarkerConfig, option) {
 			var data = _.merge(commonData, pageData);
 			
 			var viewPath = nodePath.join(viewRoot, view);
-			var modulesPath = nodePath.join(viewRoot, 'modules');
+			
+			var watchDirs;
+			if (serverConfig.watchDirs) {
+				watchDirs = serverConfig.watchDirs.map(function(dir) {
+					return nodePath.join(viewRoot, dir);
+				});
+			}
 			
 			async.waterfall([
 				function(next) {
-					var modified = getModified(viewPath, modulesPath);
+					var modified = getModified(viewPath, watchDirs);
 					
 					var cache = viewCache[routePath];
 					if (cache) {
@@ -70,7 +86,9 @@ module.exports = function(serverConfig, freemarkerConfig, option) {
 							var errAry = err.split('\n');
 							errAry.shift();
 							errAry.pop();
-							plugins.util.log('[ERROR] freemarker', errAry.join('\n'));
+							out = errAry.join('\n');
+							plugins.util.log('[ERROR] freemarker', out);
+							out = '<pre>' + out + '</pre>';
 						}
 						viewCache[routePath] = {html: out, modified: modified};
 						next(out);

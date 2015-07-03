@@ -28,10 +28,17 @@ var Webpack = (function() {
 		
 		var isCompress = (option.isDebug !== undefined) ? !option.isDebug : config.compress;
 		
-		config.options.resolve ={
+		var root = (config.options.resolve && config.options.resolve.root) ? config.options.resolve.root : [];
+		if (!Array.isArray(root)) {
+			root = [root];
+		}
+		
+		config.options.resolve = _.extend({
 			extensions: ['', '.js', '.json'],
-			root: config.srcDir
-		};
+			root: root.concat([config.srcDir])
+		});
+		
+		//console.log('config.options', config.options);
 		
 		var srcDir = path.join(current, config.srcDir);
 		
