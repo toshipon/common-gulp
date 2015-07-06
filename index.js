@@ -12,7 +12,8 @@ exports.tasks = {
 	Freemarker: require('./tasks/freemarker'),
 	FreemarkerServer: require('./tasks/freemarker-server'),
 	PhpServer: require('./tasks/php-server'),
-	Concat: require('./tasks/concat')
+	Concat: require('./tasks/concat'),
+	Capture: require('./tasks/capture')
 };
 exports.libs = {
 	CompileLog: require('./libs/compile-log'),

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+<title>Ameba</title>
+</head>
+<style>
+  body {
+    margin: 0;
+    background-color: rgba(45, 140, 60, 0.05);
+  }
+  p { margin: 0; }
+  ul { margin: 0; padding: 0; }
+  li { list-style: none; }
+  .image-list {
+    padding-top: 20px;
+  }
+  .image-row {
+    
+  }
+  .image-row::after {
+    display: block;
+    clear: both;
+    content: "";
+  }
+  .image-item {
+    float: left;
+    margin-left: 20px;
+    margin-bottom: 20px;
+  }
+  .image-title {
+    margin-bottom: 6px;
+  }
+  .image-wrap {
+    line-height: 0;
+    border: 1px solid;
+  }
+  .image-wrap img {
+    width: 100%;
+  }
+
+</style>
+<body>
+
+<div class="image-list">
+  
+</div>
+  
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.7.0/lodash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/async/1.3.0/async.min.js"></script>
+<script src="./pathList.js"></script>
+<script>
+(function() {
+  
+  var CaptureIndex = (function() {
+  
+    var itemMargin = 20;
+    var itemBorder = 2;
+    var itemWidthRatio = 0.8;
+    
+    /**
+     * @constructor
+     */
+    function CaptureIndex() {
+      var self = this;
+      
+      this.$imageList = $('.image-list');
+      
+      this.initEvents();
+      
+      loadImages(window.pathList, function(images) {
+        self.images = images;
+        self.currentColumn = self.getColumn();
+        self.render();
+      });
+    }
+    
+    var cls = CaptureIndex.prototype;
+  
+    var template = {
+      item: _.template(heredoc(function() {/*
+        <li class="image-item">
+          <p class="image-title"><%= path %></p>
+          <div class="image-wrap">
+            <img src="./<%= path %>.png" />
+          </div>
+        </li>
+      */}))
+    };
+    
+  
+    function getImagePath(path) {
+      return './' + path + '.png';
+    }
+      
+    function heredoc(func) {
+    	return func.toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].replace(/[\t]/g, '');
+    }
+  
+    function loadImages(pathList, callback) {
+      var images = [];
+      async.each(pathList, function(path, next) {
+        var image = new Image();
+        image.src = getImagePath(path);
+        image.onload = function() {
+          next();
+        };
+        images.push(image);
+      }, function() {
+        callback(images);
+      });
+    }
+  
+    cls.getColumn = function () {
+      var winWidth = window.innerWidth;
+      
+      var column = 0;
+      var width = 0;
+      for (var i=0; i < this.images.length; i++) {
+        width += Math.round(this.images[i].width * itemWidthRatio) + itemMargin + itemBorder;
+        
+        if (width > winWidth) {
+          break;
+        }
+        
+        i++;
+        column++;
+      }
+      
+      return column;
+    };
+    
+    cls.initEvents = function() {
+      var self = this;
+      $(window).on('resize', function() {
+        var column = self.getColumn();
+        if (self.currentColumn != column) {
+          self.$imageList.empty();
+          self.currentColumn = column;
+          self.render();
+        }
+      });
+    };
+    
+    cls.render = function() {
+      var $ul;
+      for (var i=0; i < window.pathList.length; i++) {
+        var path = window.pathList[i];
+        var image = this.images[i];
+        var imageWidth = Math.round(image.width * itemWidthRatio);
+        
+        if (i % this.currentColumn === 0) {
+          $ul = $('<ul/>').addClass('image-row');
+          this.$imageList.append($ul);
+        }
+        
+        var $item = $(template.item({path: path})).css({width: imageWidth});
+        $ul.append($item);
+      }
+    };
+    
+    return CaptureIndex;
+  })();
+  
+  $(function() {
+    new CaptureIndex();
+  });
+})();
+</script>
+
+</body>
+</html>
