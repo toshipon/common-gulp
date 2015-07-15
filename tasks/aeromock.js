@@ -48,10 +48,10 @@ var Aeromock = (function() {
 					gutil.log('Aeromock:\n' + str);
 				} else if (str.indexOf('Aeromock server listening') > -1) {
 					gutil.log('Aeromock:\n' + str.replace(/\n/g, ''));
-					gutil.log('Open', gutil.colors.magenta('file://' + path.resolve(self.config.dir) + '/index.html'));
+					gutil.log('Open', gutil.colors.magenta('http://localhost:' + port));
 					doneWrap();
-				} else if (str.match(/\tERROR\t/)) {
-					gutil.log('Aeromock error:\n' + str);
+				} else if (str.match(/ページを描画できません。/)) {
+					gutil.log('Aeromock error:\n', gutil.colors.red(str.replace('ページを描画できません。', '').replace(/<br\/>/g, '\n')));
 					doneWrap();
 				}
 			});

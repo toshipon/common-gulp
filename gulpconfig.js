@@ -16,7 +16,7 @@ module.exports = {
 				options: {
 					browsers: [
 						'ios >= 6',
-						'android >= 2.3'
+						'android >= 2'
 					]
 				}
 			}

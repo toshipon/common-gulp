@@ -64,6 +64,9 @@ var Stylus = (function() {
 		}
 		
 		var isAutoprefix = ('autoprefix' in config) ? config.autoprefix : true;
+		if (isAutoprefix && !('autoprefixer' in config)) {
+			isAutoprefix = false;
+		}
 		
 		return gulp
 			.src(target, {base: srcDir})

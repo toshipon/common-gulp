@@ -8,7 +8,6 @@ var express = require('express')
 var Freemarker = require('freemarker.js');
 var async = require('async');
 
-	
 function getModified(viewPath, watchDirs) {
 	function modified(info) {
 		return (info) ? new Date(info.mtime).getTime() : 0;
@@ -44,6 +43,13 @@ module.exports = function(serverConfig, freemarkerConfig, option) {
 		options: {}
 	});
 	
+	var watchDirs;
+	if (serverConfig.watchDirs) {
+		watchDirs = serverConfig.watchDirs.map(function(dir) {
+			return nodePath.join(viewRoot, dir, '**.ftl');
+		});
+	}
+	
 	var app = express();
 	
 	var viewCache;
@@ -61,13 +67,6 @@ module.exports = function(serverConfig, freemarkerConfig, option) {
 			var data = _.merge(commonData, pageData);
 			
 			var viewPath = nodePath.join(viewRoot, view);
-			
-			var watchDirs;
-			if (serverConfig.watchDirs) {
-				watchDirs = serverConfig.watchDirs.map(function(dir) {
-					return nodePath.join(viewRoot, dir);
-				});
-			}
 			
 			async.waterfall([
 				function(next) {
@@ -104,10 +103,22 @@ module.exports = function(serverConfig, freemarkerConfig, option) {
 	var port = serverConfig.port || 3000;
 	var isListened = false;
 	
-	return function(callback) {
+	gulp.watch(freemarkerConfig.configFile, function(e) {
+		server(function() {
+			plugins.util.log('[INFO] Reload server.');
+		});
+	});
+	
+	gulp.watch(watchDirs, function(e) {
+		plugins.util.log('[INFO] Clear cache.');
+		viewCache = {};
+	});
+	
+	function server(callback) {
+		
 		return gulp
 			.src(freemarkerConfig.configFile)
-			.pipe(plugins.watch(freemarkerConfig.configFile))
+			//.pipe(plugins.watch(freemarkerConfig.configFile))
 			.pipe(plugins.yaml())
 			.pipe(through.obj(function(file, enc, next) {
 				viewCache = {};
@@ -141,5 +152,7 @@ module.exports = function(serverConfig, freemarkerConfig, option) {
 				
 				callback();
 			}));
-	};
+	}
+	
+	return server;
 };
