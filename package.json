@@ -26,7 +26,6 @@
     "gulp-uglify": "^1.1.0",
     "gulp-util": "^3.0.4",
     "gulp-watch": "^4.1.1",
-    "gulp-webpack": "^1.3.2",
     "gulp-webserver": "^0.9.0",
     "gulp-yaml": "^0.2.4",
     "gulp.spritesmith": "^3.2.0",
@@ -38,6 +37,7 @@
     "nightmare": "^1.8.2",
     "rimraf": "^2.4.1",
     "stylus": "^0.50.0",
-    "through2": "^0.6.3"
+    "through2": "^0.6.3",
+    "webpack-stream": "^2.0.0"
   }
 }

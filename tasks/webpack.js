@@ -1,6 +1,7 @@
 var path = require('path');
 var gulp = require('gulp');
 var plugins = require("gulp-load-plugins")();
+var webpackStream = require('webpack-stream');
 var through = require('through2');
 var _ = require('lodash');
 var util = require('./util');
@@ -53,7 +54,7 @@ var Webpack = (function() {
 				this.push(file);
 				return next();
 			}))
-			.pipe(plugins.webpack(config.options))
+			.pipe(webpackStream(config.options))
 			.pipe(plugins.if(isCompress, plugins.uglify(config.uglify)))
 			.pipe(gulp.dest(config.destDir))
 			.pipe(compileLog({logTemplate: 'Webpack Compiled files:'}))
