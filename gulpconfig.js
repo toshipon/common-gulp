@@ -113,4 +113,8 @@ module.exports = {
 			destName: 'vendor.js'
 		}
 	},
+	bower: {
+		rootDir: './src/',
+		directory: 'bower_components'
+	}
 };
