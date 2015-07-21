@@ -4,6 +4,7 @@ module.exports = {
 			srcDir: './template/stylus/',
 			destDir: './dest/css/',
 			useNib: true,
+			useNormalize: true,
 			options: {
 				define: {
 					'sprite-version': '201409020000'
@@ -114,7 +115,7 @@ module.exports = {
 		}
 	},
 	bower: {
-		rootDir: './src/',
+		cwd: './src/',
 		directory: 'bower_components'
 	}
 };

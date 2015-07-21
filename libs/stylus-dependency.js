@@ -107,8 +107,8 @@ var StylusDependency = (function() {
 		body.replace(/@import[\s]+([a-zA-Z\-_]*)[\s\+]*("|')(.+?)("|')/g, function(str, varName, str2, importFilePath) {
 			var importFile;
 			
-			// nibの場合はスルー
-			if (importFilePath === 'nib') {
+			// nib,normalizeの場合はスルー
+			if (importFilePath === 'nib' || importFilePath === 'normalize') {
 				return;
 			}
 			

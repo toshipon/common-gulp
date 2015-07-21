@@ -12,21 +12,33 @@ var Bower = (function() {
 	 */
 	function Bower(config) {
 		this.config = config;
-		this.installDir = path.join(config.rootDir, config.directory || 'bower_components');
+		this.installDir = path.join(config.cwd, getDirectory(config.directory));
+		console.log('this.installDir', this.installDir);
 	}
 	
 	var cls = Bower.prototype;
 	
+	function getDirectory(directory) {
+		return directory || 'bower_components';
+	}
+
+	/**
+	 * @return {Boolean}
+	 */
+	cls.isInstalled = function() {
+		return fs.existsSync(this.installDir);
+	};
+	
 	cls.install = function() {
-		if (fs.existsSync(this.installDir)) {
+		if (this.isInstalled()) {
 			return;
 		}
-		return plugins.bower({cwd: this.config.rootDir})
+		return plugins.bower({cwd: this.config.cwd, directory: getDirectory(this.config.directory)})
 			.pipe(plugins.notify({message: 'Bower installed.', onLast: true}));
 	};
 	
 	cls.update = function() {
-		return plugins.bower({cmd: 'update', cwd: this.config.rootDir})
+		return plugins.bower({cmd: 'update', cwd: this.config.cwd, directory: getDirectory(this.config.directory)})
 			.pipe(plugins.notify({message: 'Bower updated.', onLast: true}));
 	};
 	

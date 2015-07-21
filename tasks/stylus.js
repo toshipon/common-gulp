@@ -3,6 +3,7 @@ var plugins = require("gulp-load-plugins")();
 var path = require('path');
 var through = require('through2');
 var nib = require('nib');
+var normalize = require('normalize');
 var _ = require('lodash');
 var multimatch = require('multimatch');
 var util = require('./util');
@@ -59,8 +60,12 @@ var Stylus = (function() {
 		var isCompress = (option.isDebug !== undefined) ? !option.isDebug : config.options.compress;
 		config.options.compress = isCompress;
 		
+		config.options.use = [];
 		if (config.useNib) {
-			config.options.use = [nib()];
+			config.options.use.push(nib());
+		}
+		if (config.useNormalize) {
+			config.options.use.push(normalize());
 		}
 		
 		var isAutoprefix = ('autoprefix' in config) ? config.autoprefix : true;
