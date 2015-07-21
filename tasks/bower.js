@@ -13,7 +13,6 @@ var Bower = (function() {
 	function Bower(config) {
 		this.config = config;
 		this.installDir = path.join(config.cwd, getDirectory(config.directory));
-		console.log('this.installDir', this.installDir);
 	}
 	
 	var cls = Bower.prototype;
