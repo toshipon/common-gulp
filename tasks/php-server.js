@@ -32,12 +32,12 @@ module.exports = function(serverConfig, renderConfig, option) {
 	var port = serverConfig.port || process.env.PORT || 3000;
 	var isListened = false;
 	
-	return function() {
+	return function(callback) {
 		return gulp
 			.src(renderConfig.configFile)
 			.pipe(plugins.watch(renderConfig.configFile))
 			.pipe(plugins.yaml())
-			.pipe(through.obj(function(file, enc, callback) {
+			.pipe(through.obj(function(file, enc, next) {
 				routing('/');
 				
 				var viewConfig = JSON.parse(file.contents);
