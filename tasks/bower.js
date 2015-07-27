@@ -11,14 +11,28 @@ var Bower = (function() {
 	 * @constructor
 	 */
 	function Bower(config) {
+		config = config || {};
+		config.cwd = config.cwd || './';
+		config.directory = config.directory || null;
+		this.installDir = getInstallDir(config);
+		console.log('this.installDir', this.installDir);
 		this.config = config;
-		this.installDir = path.join(config.cwd, getDirectory(config.directory));
 	}
 	
 	var cls = Bower.prototype;
 	
-	function getDirectory(directory) {
-		return directory || 'bower_components';
+	function getInstallDir(config) {
+		var installDir = null;
+		
+		var bowerrc = path.join(config.cwd, '.bowerrc');
+		if (fs.existsSync(bowerrc)) {
+			var bower_config = JSON.parse(fs.readFileSync(bowerrc));
+			installDir = path.join(config.cwd, bower_config.directory);
+		} else {
+			installDir = path.join(config.cwd, config.directory);
+		}
+		
+		return installDir || path.join(config.cwd, './bower_components');
 	}
 
 	/**
@@ -32,12 +46,12 @@ var Bower = (function() {
 		if (this.isInstalled()) {
 			return;
 		}
-		return plugins.bower({cwd: this.config.cwd, directory: getDirectory(this.config.directory)})
+		return plugins.bower({cwd: this.config.cwd, directory: this.config.directory})
 			.pipe(plugins.notify({message: 'Bower installed.', onLast: true}));
 	};
 	
 	cls.update = function() {
-		return plugins.bower({cmd: 'update', cwd: this.config.cwd, directory: getDirectory(this.config.directory)})
+		return plugins.bower({cmd: 'update', cwd: this.config.cwd, directory: this.config.directory})
 			.pipe(plugins.notify({message: 'Bower updated.', onLast: true}));
 	};
 	
