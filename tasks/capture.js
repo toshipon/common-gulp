@@ -12,6 +12,13 @@ var fs = require('fs');
 module.exports = function(config, option) {
 	option = option || {};
 	
+	if (!config.viewport) {
+		config.viewport = {
+			width: 320,
+			height: 480
+		};
+	}
+	
 	var html = fs.readFileSync(path.join(__dirname, '../templates/capture_index.html'));
 	
 	var nightmare = new Nightmare();
@@ -37,9 +44,12 @@ module.exports = function(config, option) {
 						paths.push(urlInfo.path);
 						var imagePath = path.join(config.destDir, urlInfo.path + '.png');
 						nightmare
-							.viewport(320, 480)
-							.goto(urlInfo.url)
-							.screenshot(imagePath)
+							.viewport(config.viewport.width, config.viewport.height)
+							.goto(urlInfo.url);
+						if (config.wait) {
+							nightmare.wait(config.wait);
+						}
+						nightmare.screenshot(imagePath)
 							.run(function(err) {
 								if (err) {
 									gutil.log(gutil.colors.red('[ERROR] capture', JSON.stringify(err, null, 2)));

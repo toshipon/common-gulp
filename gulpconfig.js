@@ -117,5 +117,14 @@ module.exports = {
 	bower: {
 		cwd: './src/',
 		directory: 'bower_components'
+	},
+	capture: {
+		srcViewConfig: './src/views/config.yaml',
+		destDir: './public/capture/',
+		baseUrl: 'http://localhost:3000/',
+		viewport: {
+			width: 320,
+			height: 480
+		}
 	}
 };
