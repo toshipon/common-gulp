@@ -13,7 +13,7 @@ var Bower = (function() {
 	function Bower(config) {
 		config = config || {};
 		config.cwd = config.cwd || './';
-		config.directory = config.directory || null;
+		config.directory = config.directory || 'bower_components';
 		this.installDir = getInstallDir(config);
 		console.log('this.installDir', this.installDir);
 		this.config = config;
