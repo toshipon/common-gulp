@@ -19,10 +19,11 @@ module.exports = function(config, option) {
 		};
 	}
 	
-	var html = fs.readFileSync(path.join(__dirname, '../templates/capture_index.html'));
-	
-	var nightmare = new Nightmare();
 	return function() {
+		var nightmare = new Nightmare();
+		var timestamp = (new Date()).getTime().toString();
+		var html = fs.readFileSync(path.join(__dirname, '../templates/capture_index.html'));
+		
 		gulp
 			.src(config.srcViewConfig)
 			.pipe(yaml())
@@ -42,14 +43,15 @@ module.exports = function(config, option) {
 					async.eachSeries(urlInfoList, function(urlInfo, next) {
 						cnt++;
 						paths.push(urlInfo.path);
-						var imagePath = path.join(config.destDir, urlInfo.path + '.png');
+						var imagePath = path.join(config.destDir, timestamp, urlInfo.path + '.png');
 						nightmare
 							.viewport(config.viewport.width, config.viewport.height)
 							.goto(urlInfo.url);
 						if (config.wait) {
 							nightmare.wait(config.wait);
 						}
-						nightmare.screenshot(imagePath)
+						nightmare
+							.screenshot(imagePath)
 							.run(function(err) {
 								if (err) {
 									gutil.log(gutil.colors.red('[ERROR] capture', JSON.stringify(err, null, 2)));
@@ -58,7 +60,7 @@ module.exports = function(config, option) {
 								next();
 							});
 					}, function() {
-						var json = 'window.pathList=' + JSON.stringify(paths);
+						var json = 'window.pathList=' + JSON.stringify(paths) + ';window.pathVersion=' + timestamp;
 						fs.writeFileSync(path.join(config.destDir, 'pathList.js'), json);
 						var html = fs.readFileSync(path.join(__dirname, '../templates/capture_index.html'));
 						fs.writeFileSync(path.join(config.destDir, 'index.html'), html);

@@ -42,6 +42,7 @@
   }
   .image-wrap img {
     width: 100%;
+    cursor: pointer;
   }
 
 </style>
@@ -51,7 +52,7 @@
   <select class="select-ratio">
     <option value="1">100%</option>
     <option value="0.9">90%</option>
-    <option value="0.8" selected="selected">80%</option>
+    <option value="0.8">80%</option>
     <option value="0.7">70%</option>
     <option value="0.6">60%</option>
     <option value="0.5">50%</option>
@@ -76,7 +77,7 @@
     
     var itemMargin = 20;
     var itemBorder = 2;
-    var itemWidthRatio = 0.8;
+    var ITEM_WIDTH_RATIO = 0.8;
     
     /**
      * @constructor
@@ -85,10 +86,11 @@
       var self = this;
       
       this.$imageList = $('.image-list');
+      this.itemWidthRatio = getItemWidthRatio();
       
       this.initEvents();
       
-      loadImages(window.pathList, function(images) {
+      loadImages(window.pathVersion, window.pathList, function(images) {
         self.images = images;
         self.currentColumn = self.getColumn();
         self.render();
@@ -102,25 +104,33 @@
         <li class="image-item">
           <p class="image-title"><%= path %></p>
           <div class="image-wrap">
-            <img src="./<%= path %>.png" />
+            <img src="./<%= version %>/<%= path %>.png" />
           </div>
         </li>
       */}))
     };
     
-    function getImagePath(path) {
-      return './' + path + '.png';
+    function getItemWidthRatio() {
+      var ratio = window.sessionStorage.getItem('itemWidthRatio');
+      if (ratio) {
+        ratio = Number(ratio);
+      }
+      return ratio || ITEM_WIDTH_RATIO;
+    }
+    
+    function getImagePath(version, path) {
+      return './' + version + '/' + path + '.png';
     }
     
     function heredoc(func) {
     	return func.toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1].replace(/[\t]/g, '');
     }
     
-    function loadImages(pathList, callback) {
+    function loadImages(version, pathList, callback) {
       var images = [];
       async.each(pathList, function(path, next) {
         var image = new Image();
-        image.src = getImagePath(path);
+        image.src = getImagePath(version, path);
         image.onload = function() {
           next();
         };
@@ -136,7 +146,7 @@
       var column = 0;
       var width = 0;
       for (var i=0; i < this.images.length; i++) {
-        width += Math.round(this.images[i].width * itemWidthRatio) + itemMargin + itemBorder;
+        width += Math.round(this.images[i].width * this.itemWidthRatio) + itemMargin + itemBorder;
         
         if (width > winWidth) {
           break;
@@ -166,13 +176,15 @@
         }
       });
       
-      $('.select-ratio').change(function() {
-        var val = $(this).val();
-        itemWidthRatio = Number(val);
+      $('.select-ratio').change(function(event, ratio) {
+        var val = (ratio) ? ratio : $(this).val();
+        self.itemWidthRatio = Number(val);
+        window.sessionStorage.setItem('itemWidthRatio', self.itemWidthRatio);
         self.$imageList.empty();
         self.currentColumn = self.getColumn();
         self.render();
       });
+      $('.select-ratio option[value="' + self.itemWidthRatio + '"]').prop('selected',true);
     };
     
     cls.render = function() {
@@ -180,14 +192,16 @@
       for (var i=0; i < window.pathList.length; i++) {
         var path = window.pathList[i];
         var image = this.images[i];
-        var imageWidth = Math.round(image.width * itemWidthRatio);
+        var imageWidth = Math.round(image.width * this.itemWidthRatio);
         
         if (i % this.currentColumn === 0) {
           $ul = $('<ul/>').addClass('image-row');
           this.$imageList.append($ul);
         }
-        
-        var $item = $(template.item({path: path})).css({width: imageWidth});
+        var $item = $(template.item({version: window.pathVersion, path: path})).css({width: imageWidth});
+        $item.find('img').click(function() {
+          window.open($(this).attr('src'));
+        });
         $ul.append($item);
       }
     };
