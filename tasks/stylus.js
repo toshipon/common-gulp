@@ -11,6 +11,8 @@ var util = require('./util');
 var compileLog = require('../libs/compile-log');
 var StylusDependency = require('../libs/stylus-dependency');
 
+var current = process.cwd();
+
 var Stylus = (function() {
 	
 	/**
@@ -115,7 +117,7 @@ var Stylus = (function() {
 				var result = self.dep.parseImports(file.path, self.config.options);
 				
 				// 依存関係の無いStandAloneなファイルを監視対象に入れる
-				if (!result && containSrcDir(self.srcDir, file.path) && !isImportFile(file.path)) {
+				if (!result && containSrcDir(path.join(current, self.srcDir), file.path) && !isImportFile(file.path)) {
 					self.watchFiles.push(file.path);
 				}
 				
