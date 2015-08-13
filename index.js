@@ -21,5 +21,7 @@ exports.tasks = {
 exports.libs = {
 	CompileLog: require('./libs/compile-log'),
 	NodePhp: require('./libs/node-php'),
-	StylusDependency: require('./libs/stylus-dependency')
+	StylusDependency: require('./libs/stylus-dependency'),
+	Yaml: require('./libs/yaml'),
+	Capture: require('./libs/capture')
 };
