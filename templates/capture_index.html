@@ -71,6 +71,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.7.0/lodash.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/async/1.3.0/async.min.js"></script>
 <script src="./captureInfoList.js"></script>
+
+<script class="template-item" type="text/template">
+  <li class="image-item">
+    <p class="image-title"><%= info.title %></p>
+    <div class="image-wrap">
+      <img src="./<%= version %>/<%= info.fileName %>.png" />
+    </div>
+  </li>
+</script>
+
 <script>
 (function() {
   
@@ -101,14 +111,7 @@
     var cls = CaptureIndex.prototype;
     
     var template = {
-      item: _.template(heredoc(function() {/*
-        <li class="image-item">
-          <p class="image-title"><%= info.title %></p>
-          <div class="image-wrap">
-            <img src="./<%= version %>/<%= info.fileName %>.png" />
-          </div>
-        </li>
-      */}))
+      item: _.template($('.template-item').html())
     };
     
     function getItemWidthRatio() {
