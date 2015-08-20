@@ -34,7 +34,7 @@ var Aeromock = (function() {
 				}
 			}
 
-			var port = option.port || '3183';
+			var port = self.config.port || '3183';
 			var execOptions = [];
 			if (self.config.execOptions) {
 				execOptions = execOptions.concat(self.config.execOptions);

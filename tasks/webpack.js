@@ -3,6 +3,7 @@ var gulp = require('gulp');
 var plugins = require("gulp-load-plugins")();
 var webpackStream = require('webpack-stream');
 var through = require('through2');
+var runSequence = require('run-sequence');
 var _ = require('lodash');
 var util = require('./util');
 
@@ -74,9 +75,27 @@ var Webpack = (function() {
 		};
 	};
 	
-	//cls.watch = function() {
-	//	gulp.watch(path.join(this.config.srcDir, '**/*.js'), ['webpack']);
-	//};
+	cls.watch = function(taskName, option) {
+		var self = this;
+		return function() {
+			var watchDirs = [
+				path.join(self.config.srcDir, '**/*.js')
+			];
+			
+			if (self.config.options && self.config.options.resolve && self.config.options.resolve.root) {
+				var rootDirs = self.config.options.resolve.root;
+				for (var i=0; i < rootDirs.length; i++) {
+					watchDirs.push(path.join(rootDirs[i], '**/*.js'))
+				}
+			}
+			
+			gulp.watch(watchDirs)
+				.on('change', function(event) {
+					self.compile(option)();
+					//runSequence(taskName);
+				});
+		};
+	};
 	
 	return Webpack;
 })();
