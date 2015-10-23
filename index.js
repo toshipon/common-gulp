@@ -23,5 +23,6 @@ exports.libs = {
 	NodePhp: require('./libs/node-php'),
 	StylusDependency: require('./libs/stylus-dependency'),
 	Yaml: require('./libs/yaml'),
-	Capture: require('./libs/capture')
+	Capture: require('./libs/capture'),
+	Freemarker: require('./libs/freemarker')
 };
