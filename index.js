@@ -24,5 +24,6 @@ exports.libs = {
 	StylusDependency: require('./libs/stylus-dependency'),
 	Yaml: require('./libs/yaml'),
 	Capture: require('./libs/capture'),
-	Freemarker: require('./libs/freemarker')
+	Freemarker: require('./libs/freemarker'),
+	Image: require('./libs/image')
 };
