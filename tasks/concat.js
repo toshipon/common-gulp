@@ -1,12 +1,14 @@
 var gulp = require('gulp');
-var concat = require('gulp-concat');
+var plugins = require("gulp-load-plugins")();
 
 module.exports = function(config, option) {
 	option = option || {};
+	var isCompress = (option.isDebug !== undefined) ? !option.isDebug : config.compress;
 	return function() {
-		var spriteData = gulp
+		gulp
 			.src(config.src)
-			.pipe(concat(config.destName))
+			.pipe(plugins.concat(config.destName))
+			.pipe(plugins.if(isCompress, plugins.uglify(config.uglify)))
 			.pipe(gulp.dest(config.destDir));
 	};
 };
