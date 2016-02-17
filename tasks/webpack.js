@@ -35,12 +35,10 @@ var Webpack = (function() {
 			root = [root];
 		}
 		
-		config.options.resolve = _.extend({
+		config.options.resolve = _.extend(config.options.resolve, {
 			extensions: ['', '.js', '.json'],
 			root: root.concat([config.srcDir])
 		});
-		
-		//console.log('config.options', config.options);
 		
 		var srcDir = path.join(current, config.srcDir);
 		
