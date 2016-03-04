@@ -5,14 +5,12 @@
   "description": "common gulp",
   "main": "index.js",
   "dependencies": {
-    "accord": "^0.16.0",
     "async": "^1.0.0",
     "express": "^4.12.4",
     "freemarker.js": "https://github.com/thaerlabs/freemarker.js",
     "glob": "^5.0.5",
     "gulp": "^3.8.10",
     "gulp-autoprefixer": "^2.1.0",
-    "gulp-bower": "0.0.10",
     "gulp-callback": "0.0.3",
     "gulp-concat": "^2.6.0",
     "gulp-filter": "^2.0.2",
@@ -29,7 +27,7 @@
     "gulp-watch": "^4.1.1",
     "gulp-webserver": "^0.9.0",
     "gulp-yaml": "^0.2.4",
-    "gulp.spritesmith": "^3.2.0",
+    "gulp.spritesmith": "^6.2.0",
     "js-yaml": "^3.3.1",
     "json-loader": "^0.5.1",
     "lodash": "^3.6.0",
@@ -40,7 +38,6 @@
     "normalize": "^0.3.1",
     "rimraf": "^2.4.1",
     "run-sequence": "^1.1.2",
-    "stylus": "^0.50.0",
     "through2": "^0.6.3",
     "webpack-stream": "^2.0.0"
   }
