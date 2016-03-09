@@ -15,8 +15,7 @@ exports.tasks = {
 	PhpServer: require('./tasks/php-server'),
 	PhpRender: require('./tasks/php-render'),
 	Concat: require('./tasks/concat'),
-	Capture: require('./tasks/capture'),
-	Bower: require('./tasks/bower')
+	Capture: require('./tasks/capture')
 };
 exports.libs = {
 	CompileLog: require('./libs/compile-log'),
