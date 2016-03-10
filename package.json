@@ -40,5 +40,8 @@
     "run-sequence": "^1.1.2",
     "through2": "^0.6.3",
     "webpack-stream": "^2.0.0"
+  },
+  "devDependencies": {
+    "gulp-ejs": "^2.1.1"
   }
 }

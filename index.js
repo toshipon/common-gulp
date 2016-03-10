@@ -6,6 +6,7 @@ exports.runSequence = require('run-sequence');
 exports.tasks = {
 	Stylus: require('./tasks/stylus'),
 	Webpack: require('./tasks/webpack'),
+	EJS: require('./tasks/ejs'),
 	Aeromock: require('./tasks/aeromock'),
 	Sprite: require('./tasks/sprite'),
 	Webserver: require('./tasks/webserver'),
