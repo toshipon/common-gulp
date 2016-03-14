@@ -43,7 +43,6 @@ var Template = (function() {
 				var regex = new RegExp(path.extname(file.path) + '$');
 				file.named = file.path.replace(srcDir, '').replace(regex, '');
 				file.path = file.path.replace(new RegExp(templateExt + '$'), templateDestExt);
-				console.log(file.path);
 				this.push(file);
 				return next();
 			}))
@@ -67,7 +66,7 @@ var Template = (function() {
 		};
 	};
 	
-	cls.watch = function(taskName, option) {
+	cls.watch = function(option) {
 		var self = this;
 		return function() {
 			var watchDirs = [
