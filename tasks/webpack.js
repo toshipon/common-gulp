@@ -73,23 +73,13 @@ var Webpack = (function() {
 	};
 	
 	cls.watch = function(taskName, option) {
-		var self = this;
+		var config = _.cloneDeep(this.config);
+		if (!config.options) {
+			config.options = {};
+		}
+		config.options.watch = true;
 		return function() {
-			var watchDirs = [
-				path.join(self.config.srcDir, '**/*.js')
-			];
-			
-			if (self.config.options && self.config.options.resolve && self.config.options.resolve.root) {
-				var rootDirs = self.config.options.resolve.root;
-				for (var i=0; i < rootDirs.length; i++) {
-					watchDirs.push(path.join(rootDirs[i], '**/*.js'))
-				}
-			}
-			
-			gulp.watch(watchDirs)
-				.on('change', function(event) {
-					self.compile(option)();
-				});
+			return compile(path.join(config.srcDir, '**/*.js'), config, option);
 		};
 	};
 	
