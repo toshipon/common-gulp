@@ -114,10 +114,6 @@ module.exports = {
 			destName: 'vendor.js'
 		}
 	},
-	bower: {
-		cwd: './src/',
-		directory: 'bower_components'
-	},
 	capture: {
 		srcViewConfig: './src/views/config.yaml',
 		destDir: './public/capture/',

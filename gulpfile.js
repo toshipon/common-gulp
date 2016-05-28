@@ -95,10 +95,4 @@ if (config.phpRender) {
 	gulp.task('php-render', tasks.PhpRender(config.phpRender));
 }
 
-// bower
-if (config.bower) {
-	var bower = tasks.Bower.create(config.bower);
-	gulp.task('bower:install', bower.install);
-}
-
 gulp.task('default', defaults);
