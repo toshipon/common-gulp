@@ -9,6 +9,7 @@
 
 # Grunt, Gulp
 node_modules
+yarn.lock
 
 # Bower
 bower_components

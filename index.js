@@ -5,6 +5,7 @@ exports.minimist = require('minimist');
 exports.runSequence = require('run-sequence');
 exports.tasks = {
 	Stylus: require('./tasks/stylus'),
+	Sass: require('./tasks/sass'),
 	Webpack: require('./tasks/webpack'),
 	EJS: require('./tasks/ejs'),
 	Aeromock: require('./tasks/aeromock'),
@@ -15,8 +16,7 @@ exports.tasks = {
 	FreemarkerServer: require('./tasks/freemarker-server'),
 	PhpServer: require('./tasks/php-server'),
 	PhpRender: require('./tasks/php-render'),
-	Concat: require('./tasks/concat'),
-	Capture: require('./tasks/capture')
+	Concat: require('./tasks/concat')
 };
 exports.libs = {
 	CompileLog: require('./libs/compile-log'),
