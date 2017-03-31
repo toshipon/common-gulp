@@ -14,26 +14,27 @@ var templateExt;
 var templateDestExt;
 
 var Template = (function() {
-	
+
 	/**
 	 * @constructor
 	 */
 	function Template(config) {
 		this.config = config;
 	}
-	
+
 	var cls = Template.prototype;
-	
+
 	/**
 	 * compile
 	 */
 	function compile(target, config, option, callback) {
 		config = _.clone(config);
-		
+		config.options = _.extend(option, config.options ? config.options: {});
+
 		var isCompress = (option.isDebug !== undefined) ? !option.isDebug : config.compress;
-		
+
 		var srcDir = path.join(current, config.srcDir);
-		
+
 		return gulp
 			.src(target)
 			.pipe(plugins.filter([ '**', '!**/_*.' + templateExt ]))
@@ -53,7 +54,7 @@ var Template = (function() {
 			// 一つ前のpipeのendイベントが発火するよう最後にpipeしておく
 			.pipe(plugins.callback(function() {}));
 	}
-	
+
 	/**
 	 * webpackのビルド
 	 * @param option
@@ -65,21 +66,21 @@ var Template = (function() {
 			return compile(path.join(config.srcDir, '**/*.' + templateExt), config, option);
 		};
 	};
-	
+
 	cls.watch = function(option) {
 		var self = this;
 		return function() {
 			var watchDirs = [
 				path.join(self.config.srcDir, '**/*.' + templateExt)
 			];
-			
+
 			gulp.watch(watchDirs)
 				.on('change', function(event) {
 					self.compile(option)();
 				});
 		};
 	};
-	
+
 	return Template;
 })();
 
